@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import "./App.css";
+import Axios from "axios";
 
 function App() {
+  // Way to get data from the backend
   useEffect(() => {
-    fetch("https://localhost:3002/api/getTables")
-      .then((response) =>
-        response.json().then((data) => {
-          console.log(data);
-        })
-      )
+    Axios.get("http://localhost:3002/api/getTable/League")
+      .then((response) => {
+        console.log(response);
+      })
       .catch((err) => {
-        console.log(err.message);
+        console.log(err.response);
       });
   }, []);
   return (

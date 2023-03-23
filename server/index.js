@@ -6,18 +6,55 @@ const app = express();
 
 const PORT = 3002;
 
+/**
+ * If getting error connecting with the mysql database, make sure to
+ * change the password in the db.js file to your mysql password
+ * and make sure to create a database called "SoccerLeague"
+ *
+ * mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+ * mysql> FLUSH PRIVILEGES;
+ */
+
 app.use(cors());
 app.use(express.json());
 
-// Route all posts to /api/posts
-app.get("/api/getTables", (req, res) => {
-  console.log("Getting tables");
-  db.query("SELECT * FROM Coaches;", (err, result) => {
-    if (err) {
-      console.log(err);
+// Connect to database
+db.connect((err) => {
+  if (err) throw err;
+  console.log("MySQL Connected to: ", db.config.database);
+});
+
+// Get all the tables available
+app.get("/api/getTableNames", (req, res) => {
+  const sql = `
+    SELECT table_name as Tables
+    FROM information_schema.tables
+    WHERE table_schema = 'SoccerLeague';
+  `;
+  db.query(sql, (err, result) => {
+    if (result) {
+      res.send(result);
     }
-    res.send(result);
   });
+});
+
+// Get all coaches
+app.get("/api/getTable/:id", (req, res) => {
+  const tableName = req.params.id;
+  const sql = `SELECT * FROM ${tableName};`;
+  db.query(sql, (err, result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No table found with the name: " + tableName });
+    }
+  });
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello from the server");
 });
 
 app.listen(PORT, () => {
