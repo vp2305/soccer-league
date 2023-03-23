@@ -3,3 +3,13 @@
     min-height: 100vh;
     padding: 10px 30px;
 }
+.tableContainer {
+    width: 100%;
+    height: calc(100vh - 10vh);
+    max-height: 100vh;
+    margin-top: 30px;
+    align-content: center;
+    justify-content: center;
+    background-color: aliceblue;
+    
+}
