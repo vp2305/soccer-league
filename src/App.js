@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
+import LandingPage from "./components/landing";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   useEffect(() => {
@@ -15,7 +17,8 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <LandingPage />
+      <Dashboard />\
     </div>
   );
 }
