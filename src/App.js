@@ -1,21 +1,18 @@
 import { useEffect } from "react";
 import "./App.css";
-import Axios from "axios";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Landing from "./Pages/Landing";
+import TableInformation from "./Pages/TableInformation";
 
 function App() {
-  // Way to get data from the backend
-  useEffect(() => {
-    Axios.get("http://localhost:3002/api/getTableNames")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }, []);
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <Router>
+        <Routes>
+          <Route path="/table/:id" element={<TableInformation />} />
+          <Route path="/" element={<Landing />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
