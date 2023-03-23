@@ -3,13 +3,44 @@
     min-height: 100vh;
     padding: 10px 30px;
 }
+
+.searchContainer{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0px;
+    background-color: #282c34;
+}
+
+.searchContainer > input{
+    flex: 1;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1.1rem;
+    /* margin-right: 10px; */
+    background-color: aliceblue;
+}
+
+.searchContainer > Button{
+    width: fit-content;
+    border-radius: 5px;
+    font-size: 15px;
+    text-transform: capitalize;
+    border: none !important; 
+    padding: 7px 20px;
+}
+
 .tableContainer {
     width: 100%;
-    height: calc(100vh - 10vh);
+    height: calc(100vh - 15vh);
     max-height: 100vh;
-    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
     align-content: center;
     justify-content: center;
     background-color: aliceblue;
-    
 }

@@ -39,12 +39,18 @@ function Landing() {
 
       <div className="availableTablesContainer">
         <h5>Available Tables</h5>
+
+        {tableNames.length === 0 && (
+          <p>No tables available or unable to connect to the database.</p>
+        )}
+
+        {/* View Table */}
         <ul className="tablesWrapper">
-          {tableNames.map((tableName, i) => (
+          {tableNames.map((tableName) => (
             <Button
               variant="contained"
               key={tableName.Tables}
-              onClick={(e) => viewTable(tableName.Tables)}
+              onClick={() => viewTable(tableName.Tables)}
             >
               {tableName.Tables}
             </Button>
