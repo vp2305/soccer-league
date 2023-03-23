@@ -29,8 +29,9 @@ app.get("/api/getTableNames", (req, res) => {
   const sql = `
     SELECT table_name as Tables
     FROM information_schema.tables
-    WHERE table_schema = 'SoccerLeague';
+    WHERE table_schema = '${db.config.database}';
   `;
+  console.log(sql);
   db.query(sql, (err, result) => {
     if (result) {
       res.send(result);

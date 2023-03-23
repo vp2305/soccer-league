@@ -5,7 +5,7 @@ import Axios from "axios";
 function App() {
   // Way to get data from the backend
   useEffect(() => {
-    Axios.get("http://localhost:3002/api/getTable/League")
+    Axios.get("http://localhost:3002/api/getTableNames")
       .then((response) => {
         console.log(response);
       })
