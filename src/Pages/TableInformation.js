@@ -69,29 +69,30 @@ function TableInformation() {
   }, [search]);
 
   const handleDelete = () => {
-    fetch(`http://localhost:3002/api/deleteRow/${id}`, {
-      body: JSON.stringify({
-        ids: selectedRows,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Success:", data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        }),
+    // If no rows are selected, return
+    if (selectedRows.length === 0) return;
+
+    const body = JSON.stringify({
+      ids: selectedRows,
     });
-    // Axios.delete(
-    //   `http://localhost:3002/api/deleteRow/${id}/${selectedRows}`,
-    //   (err, result) => {
-    //     if (result) {
-    //       console.log(result);
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
+
+    fetch(`http://localhost:3002/api/deleteRows/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        getTableData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
   return (
     <div className="TableInformation">
       <h3>Table Information for {id}</h3>

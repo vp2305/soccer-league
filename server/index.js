@@ -56,18 +56,16 @@ app.get("/api/getTable/:id", (req, res) => {
 // Drop a row from a table
 app.delete("/api/deleteRows/:tableName", (req, res) => {
   const tableName = req.params.tableName;
-  const ids = req.body.ids;
+  const { ids } = req.body;
   const sql = `
     DELETE FROM ${tableName}
     WHERE Id IN (${ids.join(",")});
   `;
-  console.log(sql);
-
   db.query(sql, (err, result) => {
     if (result) {
       res.send(result);
     } else {
-      console.log(res);
+      console.log(err);
       res
         .status(404)
         .json({ message: "No table found with the name: " + tableName });
@@ -86,15 +84,17 @@ app.post("/api/addRow/:tableName", (req, res) => {
       .join(", ")});
   `;
 
-  db.query(sql, (err, result) => {
-    if (result) {
-      res.send(result);
-    } else {
-      res
-        .status(404)
-        .json({ message: "No table found with the name: " + tableName });
-    }
-  });
+  console.log(sql);
+
+  // db.query(sql, (err, result) => {
+  //   if (result) {
+  //     res.send(result);
+  //   } else {
+  //     res
+  //       .status(404)
+  //       .json({ message: "No table found with the name: " + tableName });
+  //   }
+  // });
 });
 
 // Search for a row in a table
