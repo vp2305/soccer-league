@@ -1,24 +1,18 @@
 import { useEffect } from "react";
 import "./App.css";
-import LandingPage from "./components/landing";
-import Dashboard from "./components/Dashboard";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Landing from "./Pages/Landing";
+import TableInformation from "./Pages/TableInformation";
 
 function App() {
-  useEffect(() => {
-    fetch("https://localhost:3002/api/getTables")
-      .then((response) =>
-        response.json().then((data) => {
-          console.log(data);
-        })
-      )
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
   return (
     <div className="App">
-      <LandingPage />
-      <Dashboard />\
+      <Router>
+        <Routes>
+          <Route path="/table/:id" element={<TableInformation />} />
+          <Route path="/" element={<Landing />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
