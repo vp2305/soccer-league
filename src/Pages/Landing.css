@@ -34,3 +34,90 @@
 .tablesWrapper > Button:last-child{
     margin-right: 0;
 }
+
+.createTableContainer, .deleteTableContainer{
+    width: 100%;
+    height: 100%;
+    margin-top: 30px !important;
+}
+
+.createTableForm,.deleteTableWrapper{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.createTableForm > Button {
+    width: fit-content;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 15px;
+    text-transform: capitalize;
+    border: none !important; 
+    padding: 7px 20px;
+}
+
+#addButton{
+    width: 120px !important;
+    margin-bottom: 0px !important;
+    background-color: transparent;
+    border: 2px solid #0138a4 !important;
+    margin-right: 20px;
+    text-transform: capitalize;
+}
+
+#submitButton{
+    width: 120px !important;
+    text-transform: capitalize;
+}
+
+/* .createTableForm > label:nth-child(1){
+    margin-top: 0;
+} */
+
+.createTableForm > label{
+    margin: 15px 0;
+}
+
+.buttonWrapper{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.deleteTableWrapper {
+    margin-top: 15px;
+}
+
+.columnsInformation{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+#nameOfColumn, #typeOfColumn{
+    flex: 1;
+}
+
+#nameOfColumn{
+    margin-right: 10px;
+}
+
+#nameOfColumn > input {
+    width: 100%;
+}
+
+.deleteTableWrapper > Button{
+    width: fit-content;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 15px;
+    text-transform: capitalize;
+    border: none !important; 
+    padding: 7px 20px;
+}

@@ -27,3 +27,31 @@ p {
   font-size: 1.1rem;
   margin: 5px 0;
 }
+
+input{
+  flex: 1;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 1.1rem;
+  /* margin-right: 10px; */
+  background-color: aliceblue;
+}
+
+label{
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+select{
+  width: 100%;
+  flex: 1;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 1.1rem;
+  /* margin-right: 10px; */
+  background-color: aliceblue;
+}
