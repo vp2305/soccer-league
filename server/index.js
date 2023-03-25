@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const app = express();
 
+// Specify the port to run the server on
 const PORT = 3002;
 
 /**
@@ -18,13 +19,13 @@ const PORT = 3002;
 app.use(cors());
 app.use(express.json());
 
-// Connect to database
+// Connect to database and start the server
 db.connect((err) => {
   if (err) throw err;
   console.log("MySQL Connected to: ", db.config.database);
 });
 
-// Get all the tables available
+// Get all the tables available from the connected server
 app.get("/api/getTableNames", (req, res) => {
   const sql = `
     SELECT table_name as Tables
@@ -53,7 +54,7 @@ app.get("/api/getTable/:id", (req, res) => {
   });
 });
 
-// Drop a row from a table
+// Delete a table based on the table name
 app.delete("/api/deleteRows/:tableName", (req, res) => {
   const tableName = req.params.tableName;
   const { ids } = req.body;
@@ -73,6 +74,7 @@ app.delete("/api/deleteRows/:tableName", (req, res) => {
   });
 });
 
+// Create a new table based on the table name and fields provided
 app.post("/api/create/:tableName", (req, res) => {
   // Create a table with the fields provided in the body
   const tableName = req.params.tableName;
@@ -97,6 +99,7 @@ app.post("/api/create/:tableName", (req, res) => {
   });
 });
 
+// Delete a table based on the table name
 app.delete("/api/delete/:tableName", (req, res) => {
   // Delete a table with the name provided in the body
   const tableName = req.params.tableName;
@@ -114,7 +117,7 @@ app.delete("/api/delete/:tableName", (req, res) => {
   });
 });
 
-// Add a row to a table
+// Add a row to a table based on the data provided by the user
 app.post("/api/addRow/:tableName", (req, res) => {
   const tableName = req.params.tableName;
   const { data } = req.body;
@@ -146,7 +149,7 @@ app.post("/api/addRow/:tableName", (req, res) => {
   });
 });
 
-// Search for a row in a table
+// Search which rows contain the search term from all the attributes available
 app.get("/api/search/:tableName/:columns/:search", (req, res) => {
   const tableName = req.params.tableName;
   const columns = req.params.columns.split(",");
@@ -170,10 +173,12 @@ app.get("/api/search/:tableName/:columns/:search", (req, res) => {
   });
 });
 
+// Index route to test the server
 app.get("/", (req, res) => {
   res.send("Hello from the server");
 });
 
+// Start the server listening on the specified port
 app.listen(PORT, () => {
   console.log("Server is running on " + PORT);
 });

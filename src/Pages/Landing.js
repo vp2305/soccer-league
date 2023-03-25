@@ -5,12 +5,16 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function Landing() {
+  // Declare state variables
   const [tableNames, setTableNames] = useState([]);
   const [createTable, setCreateTable] = useState([{ name: "Id", type: "int" }]);
   const [tableName, setTableName] = useState("");
   const [deleteTable, setDeleteTable] = useState("");
+
+  // For navigation
   const history = useNavigate();
 
+  // Get all the available tables from the database
   const getAvailableTables = useCallback(() => {
     Axios.get("http://localhost:3002/api/getTableNames")
       .then((response) => {
@@ -21,18 +25,22 @@ function Landing() {
       });
   }, []);
 
+  // Get all the available tables on page load
   useEffect(() => {
     getAvailableTables();
   }, [getAvailableTables]);
 
+  // Push to the table information page
   const viewTable = (tableName) => {
     history(`/table/${tableName}`);
   };
 
+  // Add a new column to the create table state
   const addColumnListener = () => {
     setCreateTable([...createTable, { name: "", type: "int" }]);
   };
 
+  // Create a new table with the attributes specified in the create table state
   const createTableListener = (e) => {
     e.preventDefault();
     fetch(`http://localhost:3002/api/create/${tableName}`, {
@@ -56,6 +64,7 @@ function Landing() {
       });
   };
 
+  // Delete a table from the database based on the specified table name
   const deleteTableListener = (e) => {
     e.preventDefault();
     fetch(`http://localhost:3002/api/delete/${deleteTable}`, {

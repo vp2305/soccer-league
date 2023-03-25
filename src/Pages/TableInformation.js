@@ -6,6 +6,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import "./TableInformation.css";
 import { Button } from "@mui/material";
 
+/**
+ * Table information function is used display information about a specific table.
+ * It will display the table data and allow the user to search for specific rows as a well as delete or add rows.
+ *
+ * @category Pages
+ * @param {string} id - Table Name from the
+ * @returns {JSX.Element} Table Information Page
+ */
 function TableInformation() {
   const { id } = useParams();
   const [data, setData] = useState([]);
@@ -15,10 +23,12 @@ function TableInformation() {
   const [addRowData, setAddRowData] = useState({});
   const [addRowStatus, setAddRowStatus] = useState(false);
 
+  // Handle row selection for deletion
   const handleRowSelection = (row) => {
     setSelectedRows(row);
   };
 
+  // Get table data based on the current table name
   const getTableData = useCallback(() => {
     Axios.get(`http://localhost:3002/api/getTable/${id}`)
       .then((response) => {
@@ -29,6 +39,7 @@ function TableInformation() {
       });
   }, [id]);
 
+  // Search for a specific row based on the search input
   const searchRow = useCallback(() => {
     const column = columns.map((column) => column.field);
     Axios.get(`http://localhost:3002/api/search/${id}/${column}/${search}`)
@@ -40,14 +51,17 @@ function TableInformation() {
       });
   }, [id, columns, search]);
 
+  // Map the Id column to the row id
   const getRowId = (row) => {
     return row.Id;
   };
 
+  // Get table data on page load
   useEffect(() => {
     getTableData();
   }, [getTableData]);
 
+  // Set the columns based on the table data
   useEffect(() => {
     if (data.length > 0) {
       const columns = Object.keys(data[0]).map((key) => ({
@@ -59,6 +73,7 @@ function TableInformation() {
     }
   }, [data]);
 
+  // invoke searchRow if the search input is not empty
   useEffect(() => {
     if (search.length > 0) {
       searchRow();
@@ -67,6 +82,7 @@ function TableInformation() {
     }
   }, [search]);
 
+  // Delete selected rows by calling the api endpoint
   const handleDelete = () => {
     // If no rows are selected, return
     if (selectedRows.length === 0) return;
@@ -92,6 +108,7 @@ function TableInformation() {
       });
   };
 
+  // Format the add row data based on the column type
   const handleAddRowListener = (e, columnName) => {
     e.preventDefault();
 
@@ -102,6 +119,7 @@ function TableInformation() {
     }
   };
 
+  // Add a row by calling the api endpoint
   const handleAddRow = (e) => {
     e.preventDefault();
     fetch(`http://localhost:3002/api/addRow/${id}`, {
