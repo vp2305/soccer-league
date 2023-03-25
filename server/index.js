@@ -41,7 +41,7 @@ app.get("/api/getTableNames", (req, res) => {
 // Get all Table Data for a specific table
 app.get("/api/getTable/:id", (req, res) => {
   const tableName = req.params.id;
-  const sql = `SELECT * FROM ${tableName};`;
+  const sql = `SELECT * FROM ${db.config.database}.${tableName};`;
   db.query(sql, (err, result) => {
     if (result) {
       res.send(result);
@@ -58,9 +58,50 @@ app.delete("/api/deleteRows/:tableName", (req, res) => {
   const tableName = req.params.tableName;
   const { ids } = req.body;
   const sql = `
-    DELETE FROM ${tableName}
+    DELETE FROM ${db.config.database}.${tableName}
     WHERE Id IN (${ids.join(",")});
   `;
+  db.query(sql, (err, result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      console.log(err);
+      res
+        .status(404)
+        .json({ message: "No table found with the name: " + tableName });
+    }
+  });
+});
+
+app.post("/api/create/:tableName", (req, res) => {
+  // Create a table with the fields provided in the body
+  const tableName = req.params.tableName;
+  const { fields } = req.body;
+  // Create sql query based on the fields provided
+  const sql = `
+    CREATE TABLE ${db.config.database}.${tableName} (
+      ${fields.map((field) => `${field.name} ${field.type}`).join(", ")}
+    );
+  `;
+
+  // Execute the query
+  db.query(sql, (err, result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      console.log(err);
+      res
+        .status(404)
+        .json({ message: "No table found with the name: " + tableName });
+    }
+  });
+});
+
+app.delete("/api/delete/:tableName", (req, res) => {
+  // Delete a table with the name provided in the body
+  const tableName = req.params.tableName;
+  const sql = `DROP TABLE ${db.config.database}.${tableName};`;
+
   db.query(sql, (err, result) => {
     if (result) {
       res.send(result);
@@ -77,24 +118,32 @@ app.delete("/api/deleteRows/:tableName", (req, res) => {
 app.post("/api/addRow/:tableName", (req, res) => {
   const tableName = req.params.tableName;
   const { data } = req.body;
+
+  // Create sql query based on the column type and value
   const sql = `
-    INSERT INTO ${tableName} (${Object.keys(data).join(", ")})
+    INSERT INTO ${db.config.database}.${tableName} (${Object.keys(data).join(
+    ", "
+  )})
     VALUES (${Object.values(data)
-      .map((value) => `'${value}'`)
+      .map((value) => {
+        if (typeof value === "string") {
+          return `'${value}'`;
+        } else {
+          return value;
+        }
+      })
       .join(", ")});
   `;
 
-  console.log(sql);
-
-  // db.query(sql, (err, result) => {
-  //   if (result) {
-  //     res.send(result);
-  //   } else {
-  //     res
-  //       .status(404)
-  //       .json({ message: "No table found with the name: " + tableName });
-  //   }
-  // });
+  db.query(sql, (err, result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No table found with the name: " + tableName });
+    }
+  });
 });
 
 // Search for a row in a table
@@ -104,7 +153,7 @@ app.get("/api/search/:tableName/:columns/:search", (req, res) => {
   const search = req.params.search;
 
   const sql = `
-    SELECT * FROM ${tableName}
+    SELECT * FROM ${db.config.database}.${tableName}
     WHERE ${columns
       .map((column) => `${column} LIKE '%${search}%'`)
       .join(" OR ")};
